@@ -1,0 +1,42 @@
+---
+- name: Setup For Wordpress
+  hosts: db
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: install epel-release
+      yum:
+        name:
+         - epel-release
+
+    - name: install mysql
+      yum:
+        name:
+         - python3-PyMySQL
+         - MySQL-python
+         - mariadb-server
+         - mysql
+
+    - name: start mysql
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: create DB
+      mysql_db:
+        name: "wpDB"
+        state: present
+
+    - name: create user
+      mysql_user:
+        name: "wpuser"
+        password: "1234"
+        priv: "*.*:ALL"
+        state: present
+        host: '%'
+    - name: setenforce 0
+      shell: "{{ item }}"
+      with_items:
+        - "setenforce 0"
