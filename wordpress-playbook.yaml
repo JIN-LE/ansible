@@ -10,7 +10,7 @@
         name: httpd
         state: present
 
-    - name: Packages
+    - name: packages
       yum:
         name:
           - unzip
@@ -26,6 +26,7 @@
       shell: "{{ item }}"
       with_items:
         - "yum-config-manager --enable remi-php73"
+
 
     - name: download wordpress
       get_url:
@@ -43,7 +44,7 @@
       with_items:
         - "cp -R /var/www/html/wordpress/* /var/www/html"
 
-    - name: install php, phpmysql
+    - name: install php , phpmysql
       yum:
         name:
           - php
@@ -88,4 +89,4 @@
         password: "1234"
         priv: "*.*:ALL"
         state: present
-        host: "localhost"
+        host: 'localhost'
